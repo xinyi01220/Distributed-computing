@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recognition Result</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/api/resultPage')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = 'Recognition Result: ' + data;
+                })
+                .catch(error => console.error('Error fetching the result:', error));
+        });
+    </script>
+</head>
+<body>
+<h1>Result Page</h1>
+<p id="result">Loading result...</p>
+</body>
+</html>
