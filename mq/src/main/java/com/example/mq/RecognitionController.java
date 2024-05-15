@@ -25,7 +25,7 @@ public class RecognitionController {
 
     }
 
-    @PostMapping("/recognize")
+    @PostMapping("/recognizeAnimal")
     public RedirectView recognizeAnimal(@RequestParam("file") MultipartFile file, Model model) throws IOException {
         if (file.isEmpty()) {
             model.addAttribute("message", "File is empty");
@@ -34,7 +34,32 @@ public class RecognitionController {
 
         byte[] bytes = file.getBytes();
         recognitionService.saveResult("等待识别结果...");
-        recognitionService.sendImageForRecognition(bytes);
+        recognitionService.sendImageForRecognition(bytes, "animal");
+
+        logger.info("Recognition result stored successfully");
+        return new RedirectView("/resultPage.html"); // 重定向到结果显示页面
+    }
+    @PostMapping("/recognizeWord")
+    public RedirectView recognizeWord(@RequestParam("file") MultipartFile file, Model model) throws IOException {
+        if (file.isEmpty()) {
+            model.addAttribute("message", "File is empty");
+            return new RedirectView("/errorPage.html");
+        }
+
+        byte[] bytes = file.getBytes();
+        recognitionService.saveResult("等待识别结果...");
+        recognitionService.sendImageForRecognition(bytes, "word");
+
+        logger.info("Recognition result stored successfully");
+        return new RedirectView("/resultPage.html"); // 重定向到结果显示页面
+    }
+    @PostMapping("/writePoem")
+    public RedirectView writePoem(@RequestParam("title") String title, Model model) {
+
+
+
+        recognitionService.saveResult("等待识别结果...");
+        recognitionService.sendImageForRecognition(title.getBytes(), "poem");
 
         logger.info("Recognition result stored successfully");
         return new RedirectView("/resultPage.html"); // 重定向到结果显示页面
