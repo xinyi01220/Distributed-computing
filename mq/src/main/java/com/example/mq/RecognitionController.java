@@ -65,6 +65,20 @@ public class RecognitionController {
         return new RedirectView("/resultPage.html"); // 重定向到结果显示页面
     }
 
+    @PostMapping("/recognizeFace")
+    public RedirectView recognizeFace(@RequestParam("file") MultipartFile file, Model model) throws IOException {
+        if (file.isEmpty()) {
+            model.addAttribute("message", "File is empty");
+            return new RedirectView("/errorPage.html");
+        }
+
+        byte[] bytes = file.getBytes();
+        recognitionService.saveResult("等待识别结果...");
+        recognitionService.sendImageForRecognition(file.getBytes(), "face");
+
+        logger.info("Recognition result stored successfully");
+        return new RedirectView("/resultPage.html"); // 重定向到结果显示页面
+    }
     @GetMapping("/resultPage")
     @ResponseBody
     public ResponseEntity<String> getResult() {

@@ -124,5 +124,24 @@ public class RecognitionService {
         return response.getBody();
     }
 
+    public String recognizeFace(byte[] imageBytes) {
+        String imgStr = Base64.getEncoder().encodeToString(imageBytes);
+        String imgParam;
+        try {
+            imgParam = URLEncoder.encode(imgStr, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        String param = "image=" + imgParam + "&image_type=BASE64"; // 添加 image_type 参数
+        String accessToken = "24.4bc5ae1662299ee69485fde583252a58.2592000.1718372923.282335-71021403";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<String> entity = new HttpEntity<>(param, headers);
+
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/detect?access_token=" + accessToken;
+        ResponseEntity<String> response = new RestTemplate().postForEntity(url, entity, String.class);
+        System.out.println(response);
+        return response.getBody();
+    }
 
 }

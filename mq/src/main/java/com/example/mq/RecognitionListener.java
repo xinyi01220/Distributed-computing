@@ -52,6 +52,10 @@ public class RecognitionListener {
             case "poem":
                 // 假设诗歌识别数据是直接的字符串
                 return recognitionService.writePoem((String) data);
+            case "face":
+                // 假设人脸识别数据是Base64编码的图像
+                byte[] faceBytes = Base64.getDecoder().decode((String) data);
+                return recognitionService.recognizeFace(faceBytes);
             default:
                 return "Unsupported type";
         }
